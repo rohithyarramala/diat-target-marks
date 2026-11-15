@@ -4,9 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DIAT Target Marks</title>
-<meta name="description" content="Enter the tests you've written, guess the prof's mood, and see exactly what you need in the tests left and the end-sem. Plus a CGPA calculator.">
-<meta property="og:title" content="DIAT Target Marks: what do I need to pass?">
-<meta property="og:description" content="Tests written: some. Prof mood: unknown. Get your remaining-test and end-sem targets in 10 seconds.">
+<meta name="description" content="Know your target before the exam does. See exactly what you need in the remaining tests and the end-sem to pass at DIAT Pune M.Tech, subject by subject. Plus grades and CGPA.">
+<meta name="theme-color" content="#d23c00">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://diat-target-marks.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DIAT Target Marks">
+<meta property="og:url" content="https://diat-target-marks.vercel.app/">
+<meta property="og:title" content="DIAT Target Marks: know your target before the exam does">
+<meta property="og:description" content="How much do you need in the next test and the end-sem to pass? Every subject, grade targets and CGPA, based on DIAT's exam policy.">
+<meta property="og:image" content="https://diat-target-marks.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="DIAT Target Marks: Know your target before the exam does.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DIAT Target Marks: know your target before the exam does">
+<meta name="twitter:description" content="How much do you need in the next test and the end-sem to pass? Every subject, grade targets and CGPA.">
+<meta name="twitter:image" content="https://diat-target-marks.vercel.app/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
@@ -557,7 +571,7 @@ function trunc(x,t,max){ if(x.measureText(t).width<=max) return t; while(t.lengt
 
 // share
 const SHARE_URL = location.origin.startsWith("http") ? location.origin + "/" : location.href;
-const SHARE_TEXT = "DIAT marks: work out exactly what you need in the remaining tests and the end-sem to pass, plus a CGPA calculator.";
+const SHARE_TEXT = "Test marks out? Check exactly how much you need in the next test and the end-sem to pass, for every subject, with grade targets and CGPA. Built on DIAT's exam policy. Takes 10 seconds:";
 function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("on"); clearTimeout(toast._t); toast._t=setTimeout(()=>el.classList.remove("on"),1800); }
 async function copyLink(){
   try{ await navigator.clipboard.writeText(SHARE_URL); toast("Link copied"); return; }catch(e){}
@@ -565,7 +579,7 @@ async function copyLink(){
   let ok=false; try{ ok=document.execCommand("copy"); }catch(e){} t.remove();
   toast(ok?"Link copied":SHARE_URL);
 }
-$("#waBtn").href = "https://wa.me/?text=" + encodeURIComponent(SHARE_TEXT + " " + SHARE_URL);
+$("#waBtn").href = "https://wa.me/?text=" + encodeURIComponent("*DIAT Target Marks*\n" + SHARE_TEXT + "\n" + SHARE_URL);
 $("#copyBtn").addEventListener("click", copyLink);
 $("#shareBtn").addEventListener("click", async ()=>{
   if(navigator.share){ try{ await navigator.share({title:"DIAT Target Marks", text:SHARE_TEXT, url:SHARE_URL}); }catch(e){} }
@@ -582,6 +596,7 @@ $("#shareBtn").addEventListener("click", async ()=>{
 renderRules(); render(); renderSems();
 </script>
 <!-- Vercel Web Analytics: page-view counts only (disclosed in the footer). Inert outside Vercel. -->
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
