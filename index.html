@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DIAT Target Marks</title>
+<meta name="description" content="Enter the tests you've written, guess the prof's mood, and see exactly what you need in the tests left and the end-sem. Plus a CGPA calculator.">
+<meta property="og:title" content="DIAT Target Marks: what do I need to pass?">
+<meta property="og:description" content="Tests written: some. Prof mood: unknown. Get your remaining-test and end-sem targets in 10 seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#f3f3f0; --card:#ffffff; --ink:#0c0d0f; --muted:#62666e; --line:#d9d9d4; --line-2:#c4c4be;
+  --grid:rgba(12,13,15,.045); --accent:#d23c00; --accent-ink:#ffffff; --sel:#0c0d0f; --sel-ink:#ffffff;
+  --good:#0f7a46; --warn:#a35f00; --bad:#c42b2b; --field:#fafaf8;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --head:"Inter Tight",Inter,system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a0b0d; --card:#111317; --ink:#eceef1; --muted:#8b919b; --line:#24272d; --line-2:#33373f;
+    --grid:rgba(255,255,255,.035); --accent:#ff6a2e; --accent-ink:#0a0b0d; --sel:#eceef1; --sel-ink:#0a0b0d;
+    --good:#3ec27f; --warn:#f0a63a; --bad:#ff6b6b; --field:#0d0f12;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a0b0d; --card:#111317; --ink:#eceef1; --muted:#8b919b; --line:#24272d; --line-2:#33373f;
+  --grid:rgba(255,255,255,.035); --accent:#ff6a2e; --accent-ink:#0a0b0d; --sel:#eceef1; --sel-ink:#0a0b0d;
+  --good:#3ec27f; --warn:#f0a63a; --bad:#ff6b6b; --field:#0d0f12;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background-color:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+  color:var(--ink);font:15px/1.55 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:960px;margin:0 auto;padding:32px 16px 48px}
+h1,h2,h3{font-family:var(--head);letter-spacing:-.02em;margin:0;font-weight:700}
+h3{font-size:17px}
+h1{font-size:clamp(32px,6.4vw,56px);line-height:1.02}
+h1 em{font-style:normal;color:var(--accent)}
+.sub{color:var(--muted);margin:14px 0 0;max-width:560px;font-size:16px}
+header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding-bottom:22px;border-bottom:1px solid var(--line-2);margin-bottom:18px}
+.tag{display:flex;gap:10px;align-items:center;font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.tag i{width:8px;height:8px;background:var(--accent);display:inline-block}
+.tag b{color:var(--ink);font-weight:500}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin:22px 0 18px}
+.tabs button{border:0;background:transparent;color:var(--muted);font:500 13px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:12px 18px 11px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:20px;margin-bottom:12px;position:relative}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.f{display:flex;flex-direction:column;gap:6px;font:500 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;flex:1;min-width:120px}
+input,select{font:500 15px var(--mono);color:var(--ink);background:var(--field);border:1px solid var(--line-2);border-radius:2px;padding:10px 12px;width:100%}
+input::placeholder{color:var(--muted);opacity:.7}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font:600 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:12px 16px;border-radius:2px;cursor:pointer;white-space:nowrap}
+.btn:hover{filter:brightness(1.06)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.small{padding:8px 12px;font-size:11px}
+.subj-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:-20px -20px 16px;padding:10px 12px 10px 20px;border-bottom:1px solid var(--line)}
+.idx{font:500 12px var(--mono);color:var(--accent);margin-right:12px}
+.subj-head label{display:flex;align-items:center;flex:1}
+.subj-head input{font:600 17px var(--head);letter-spacing:-.01em;border:0;background:transparent;padding:4px 0;border-radius:0}
+.subj-head input:focus{box-shadow:none;border-bottom:1px solid var(--accent)}
+.x{border:0;background:transparent;color:var(--muted);font:400 18px var(--mono);cursor:pointer;padding:2px 8px;border-radius:2px}
+.x:hover{color:var(--bad)}
+.chips{display:flex;gap:4px;flex-wrap:wrap}
+.chip{border:1px solid var(--line-2);background:var(--field);color:var(--ink);font:500 14px var(--mono);min-width:40px;height:40px;padding:0 10px;border-radius:2px;cursor:pointer}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--sel);border-color:var(--sel);color:var(--sel-ink)}
+input.chip{width:92px;font-size:13px}
+.mood{font-size:13px;color:var(--muted);margin-top:8px;min-height:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:18px;border:1px solid var(--line)}
+.stat{padding:14px 16px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat .k{font:500 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.stat .v{font:700 30px var(--mono);letter-spacing:-.03em;margin-top:6px;line-height:1.1}
+.stat .v .small{font:500 14px var(--mono);letter-spacing:0}
+.stat .n{font-size:12px;color:var(--muted);margin-top:4px}
+.good{color:var(--good)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+.verdict{margin-top:12px;padding:12px 14px;background:var(--field);border:1px solid var(--line);border-left:2px solid var(--accent);font-size:14px}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+th{font:500 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+td.num{font-family:var(--mono);font-weight:500}
+td b{font-family:var(--mono)}
+details{margin-top:14px}
+summary{cursor:pointer;color:var(--ink);font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;list-style:none;display:flex;gap:8px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";color:var(--accent);font-weight:700;width:12px}
+details[open] summary::before{content:"−"}
+.slider{display:flex;gap:12px;align-items:center;margin-top:14px;font-size:14px;flex-wrap:wrap}
+.slider b{font-family:var(--mono);color:var(--accent)}
+.slider input{flex:1;min-width:160px;padding:0;accent-color:var(--accent);background:transparent;border:0;box-shadow:none}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin:16px 0 12px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.note{display:flex;gap:12px;align-items:baseline;margin:0;font-size:13px;color:var(--muted)}
+.note span{font:500 11px var(--mono);letter-spacing:.08em;color:var(--accent);border:1px solid var(--accent);padding:1px 6px;flex:none}
+.legal{flex-basis:100%;font-size:12px;line-height:1.6;margin:6px 0 0;max-width:780px}
+footer{margin-top:36px;padding-top:18px;border-top:1px solid var(--line-2);color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between}
+footer .by{font:500 12px var(--mono);letter-spacing:.04em;text-transform:uppercase}
+footer a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid var(--accent)}
+footer a:hover{color:var(--accent)}
+.theme{border:1px solid var(--line-2);background:var(--card);color:var(--ink);border-radius:2px;width:38px;height:38px;cursor:pointer;font-size:15px;flex:none}
+.theme:hover{border-color:var(--ink)}
+.share{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-top:20px;padding:16px 20px;background:var(--card);border:1px solid var(--line);border-left:2px solid var(--accent)}
+.share h3{font-size:16px}
+.share p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.share .acts{display:flex;gap:6px;flex-wrap:wrap}
+.btn svg{width:14px;height:14px;vertical-align:-2px;margin-right:6px;fill:currentColor}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--sel);color:var(--sel-ink);font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:10px 14px;border-radius:2px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px}
+a:hover{color:var(--accent)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+a.btn:not(.ghost){color:var(--accent-ink)}
+.snav{display:flex;gap:0;overflow-x:auto;border:1px solid var(--line);background:var(--card);margin-bottom:-1px;scrollbar-width:none}
+.snav::-webkit-scrollbar{display:none}
+.snav button{flex:none;display:flex;align-items:center;gap:8px;border:0;border-right:1px solid var(--line);background:transparent;color:var(--muted);font:500 13px var(--mono);padding:12px 16px;cursor:pointer;max-width:220px;white-space:nowrap;position:relative;transition:color .15s,background .15s}
+.snav button span.t{overflow:hidden;text-overflow:ellipsis}
+.snav button:hover{color:var(--ink);background:var(--field)}
+.snav button[aria-current="true"]{color:var(--ink);background:var(--field)}
+.snav button[aria-current="true"]::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--accent)}
+.snav .dot{width:7px;height:7px;flex:none;background:var(--line-2)}
+.snav .dot.good{background:var(--good)} .snav .dot.warn{background:var(--warn)} .snav .dot.bad{background:var(--bad)}
+.snav .add{color:var(--accent)}
+#subjects .card{border-top-color:var(--line)}
+.enter{animation:enter .22s ease-out}
+@keyframes enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.enter{animation:none}}
+.cnt{margin-left:8px;padding-left:8px;border-left:1px solid var(--line-2);font-weight:700}
+[hidden]{display:none!important}
+@media (max-width:620px){
+  .grid3{grid-template-columns:1fr}
+  .stat{border-right:0;border-bottom:1px solid var(--line)}
+  .stat:last-child{border-bottom:0}
+  .tabs button{flex:1;padding:12px 6px 11px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="tag"><i></i><span><b>DIAT Pune</b> / M.Tech / Target Marks</span></div>
+      <h1>Know your target<br><em>before the exam does.</em></h1>
+      <p class="sub">Enter what you've scored so far, or nothing yet. See exactly what you need in the remaining tests and the end-sem, subject by subject.</p>
+    </div>
+    <button class="theme" id="theme" aria-label="Toggle theme">◐</button>
+  </header>
+
+  <p class="note"><span>NOTE</span>Made for ease, not an official result. Based on DIAT's published exam policy. Your department and the Office of CoE have the final word.</p>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="targets">Targets</button>
+    <button role="tab" aria-selected="false" data-tab="cgpa">CGPA</button>
+    <button role="tab" aria-selected="false" data-tab="rules">Rules</button>
+  </div>
+
+  <!-- TARGETS -->
+  <section id="tab-targets">
+    <div class="card">
+      <div class="row">
+        <label class="f">Your name (for the sheet)<input id="name" placeholder="Optional" maxlength="40"></label>
+        <label class="f">Branch
+          <select id="branch">
+            <option>Robotics</option><option>Artificial Intelligence</option><option>Computer Science</option>
+            <option>Cyber Security</option><option>Data Science</option><option>Electronics</option>
+            <option>Mechanical</option><option>Aerospace</option><option>Materials</option>
+            <option>Applied Physics</option><option>Applied Chemistry</option><option>Other</option>
+          </select>
+        </label>
+      </div>
+      <p class="small muted" style="margin:12px 0 0">Course rules are the same for every branch. The branch only appears on your sheet.</p>
+    </div>
+
+    <div class="toolbar">
+      <span class="f" style="flex:none;min-width:0">Subjects</span>
+      <button class="btn" id="download">Download target sheet</button>
+    </div>
+    <nav class="snav" id="snav" aria-label="Subjects"></nav>
+
+    <div id="subjects"></div>
+  </section>
+
+  <!-- CGPA -->
+  <section id="tab-cgpa" hidden>
+    <div class="card">
+      <h3>CGPA calculator</h3>
+      <p class="small muted" style="margin:6px 0 12px">Add each semester's SGPA and credits. CGPA is the credit-weighted average, rounded to 1 decimal place as DIAT does.</p>
+      <div id="sems"></div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="btn ghost small" id="addSem">+ Add semester</button>
+      </div>
+      <div class="grid3">
+        <div class="stat"><div class="k">CGPA</div><div class="v" id="cgpa">—</div><div class="n" id="cgpaNote">Add a semester</div></div>
+        <div class="stat"><div class="k">Total credits</div><div class="v" id="credits">0</div></div>
+        <div class="stat"><div class="k">Percentage</div><div class="v" id="pct">—</div><div class="n">DIAT formula: (CGPA − 0.75) × 10</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Want a target CGPA?</h3>
+      <div class="row" style="margin-top:10px">
+        <label class="f">Target CGPA<input id="tgtCgpa" type="number" step="0.01" min="0" max="10" placeholder="e.g. 8.5"></label>
+        <label class="f">Credits next semester<input id="nextCred" type="number" min="1" placeholder="e.g. 20"></label>
+      </div>
+      <div class="verdict" id="tgtOut">Fill both boxes to see the SGPA you need next semester.</div>
+    </div>
+  </section>
+
+  <!-- RULES -->
+  <section id="tab-rules" hidden>
+    <div class="card">
+      <h3>The rules this page uses</h3>
+      <p class="small muted" style="margin:6px 0 12px">Defaults come from DIAT's <a href="https://diat.ac.in/wp-content/uploads/2026/07/ExamPolicy-Sep2025-Printed.pdf" target="_blank" rel="noopener">Examination Policies &amp; Procedures (Sep 2025)</a>, §5.2, §5.5 and §6. If your department says otherwise, change the numbers here and every target updates straight away.</p>
+      <ul class="small muted" style="margin:0 0 14px;padding-left:18px">
+        <li>Per course: 2 Assessment Tests at 20 marks each, Internal (assignments &amp; quizzes) 10 marks, End-sem 50 marks.</li>
+        <li>To pass: at least 40% in the end-sem <b>and</b> at least 40% in continuous evaluation, each counted separately. There are no grace marks.</li>
+        <li>You must earn at least 75% of first-year credits to register for semester 3.</li>
+        <li>Not covered here: PGC601/602 Research Methodology (one test and an 80-mark end-sem), self-study courses (100-mark end-sem) and labs.</li>
+      </ul>
+      <div class="row">
+        <label class="f">Test 1 out of<input type="number" id="r_t1" min="1"></label>
+        <label class="f">Test 2 out of<input type="number" id="r_t2" min="1"></label>
+        <label class="f">Internal out of<input type="number" id="r_in" min="1"></label>
+        <label class="f">End-sem out of<input type="number" id="r_end" min="1"></label>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <label class="f">Min. continuous eval (tests + internal)<input type="number" id="r_qual" min="0"></label>
+        <label class="f">Min. end-sem on its own<input type="number" id="r_endMin" min="0"></label>
+        <label class="f">Min. overall (out of 100)<input type="number" id="r_pass" min="0"></label>
+      </div>
+      <h3 style="margin-top:18px;font-size:16px">Grade cut-offs (out of 100)</h3>
+      <div class="row" id="gradeRules" style="margin-top:8px"></div>
+      <div class="toolbar" style="margin-top:14px"><button class="btn ghost small" id="resetRules">Reset to defaults</button></div>
+    </div>
+  </section>
+
+  <section class="share" aria-label="Share">
+    <div>
+      <h3>Share with your batch</h3>
+      <p>One link, and everyone knows their target before the exam.</p>
+    </div>
+    <div class="acts">
+      <button class="btn" id="shareBtn"><svg viewBox="0 0 24 24"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1z"/></svg>Share</button>
+      <a class="btn ghost" id="waBtn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.4.7-2 1-2.3.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.3.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>WhatsApp</a>
+      <button class="btn ghost" id="copyBtn">Copy link</button>
+      <a class="btn ghost" id="starBtn" href="https://github.com/rohithyarramala/diat-target-marks" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>Star on GitHub<span id="starCount" class="cnt" hidden></span></a>
+    </div>
+  </section>
+  <div class="toast" id="toast" role="status"></div>
+
+  <footer>
+    <span class="by">Built for the batch by <a href="https://github.com/rohithyarramala" target="_blank" rel="noopener">@rohithyarramala</a></span>
+    <span>All calculations run in your browser and your marks never leave your device. We count page views only, with no names or marks.</span>
+    <p class="legal"><b>Disclaimer.</b> This is an independent, unofficial tool made for convenience. It is not affiliated with, endorsed by, or operated by the Defence Institute of Advanced Technology (DIAT), Pune, or any of its departments. Targets and grades are estimates based on the publicly available <a href="https://diat.ac.in/wp-content/uploads/2026/07/ExamPolicy-Sep2025-Printed.pdf" target="_blank" rel="noopener">Examination Policies &amp; Procedures (Sep 2025)</a> and on your own inputs, including a guessed internal mark. Rules can change and can differ by course (for example labs, self-study courses and PGC601/602). Always confirm with your department, your course instructor or the Office of the Controller of Examinations. The author accepts no liability for decisions made using this page. It is provided "as is", without warranty of any kind.</p>
+  </footer>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d }catch(e){ return d } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)) }catch(e){} }
+};
+
+const DEFAULT_RULES = {
+  t1:20, t2:20, in:10, end:50, qual:20, endMin:20, pass:40,
+  grades:[["O",91,10],["A+",81,9],["A",71,8],["B+",61,7],["B",51,6],["C",41,5],["P",40,4]]
+};
+let rules = store.get("dtm_rules", null);
+if(!rules || rules.v !== 2) rules = structuredClone(DEFAULT_RULES);
+rules.v = 2;
+
+const MOODS = {
+  4:"Prof hasn't forgotten that late submission.",
+  5:"Survived. Barely.",
+  6:"Neutral mood. Standard issue.",
+  7:"Assignments on time, nothing fancy.",
+  8:"Submitted early and actually did the work.",
+  9:"The prof knows your name, for good reasons.",
+  10:"Front-bench energy. Respect."
+};
+
+let subjects = store.get("dtm_subjects", null) || [
+  {name:"Subject 1", t1:"", t2:"", mood:6, plan:""}
+];
+const save = () => { store.set("dtm_subjects", subjects); store.set("dtm_profile", {name:$("#name").value, branch:$("#branch").value}) };
+
+const fmt = n => Number.isInteger(n) ? String(n) : n.toFixed(1);
+const clamp = (n,a,b)=>Math.min(b,Math.max(a,n));
+
+function calc(s){
+  const v1 = parseFloat(s.t1), v2 = parseFloat(s.t2);
+  const k1 = !isNaN(v1), k2 = !isNaN(v2);
+  const left = [];
+  if(!k1) left.push(["Test 1", rules.t1]);
+  if(!k2) left.push(["Test 2", rules.t2]);
+  const leftMax = left.reduce((a,b)=>a+b[1], 0);
+  const leftLabel = left.length===2 ? "Test 1 + Test 2" : left.length ? left[0][0] : "";
+  const inMark = Number(s.mood);
+  const now = (k1?v1:0) + (k2?v2:0) + inMark;
+  const contMax = rules.t1 + rules.t2 + rules.in;
+  const need = Math.max(0, rules.qual - now);
+  const qualOk = need <= leftMax;
+  const minPct = leftMax ? Math.ceil(need/leftMax*20)*5 : 0;
+  const planPct = leftMax ? (s.plan===""||s.plan==null ? Math.min(100, Math.max(minPct, 60)) : Number(s.plan)) : 0;
+  const planMarks = leftMax*planPct/100;
+  const internalTotal = now + planMarks;
+  const scale = 100/(contMax + rules.end);
+  const grades = rules.grades.map(([g,cut,gp]) => {
+    const needEnd = Math.max(rules.endMin, cut/scale - internalTotal);
+    return {g, cut, gp, needEnd, possible: needEnd <= rules.end && internalTotal >= rules.qual};
+  });
+  const passEnd = Math.max(rules.endMin, rules.pass/scale - internalTotal);
+  const fail = left.length ? !qualOk : now < rules.qual;
+  return {fail, k1, k2, v1, v2, left, leftMax, leftLabel, inMark, now, contMax, need, qualOk, planPct, planMarks, internalTotal, grades, passEnd};
+}
+
+function verdictText(s, r){
+  if(!r.left.length){
+    return r.now >= rules.qual
+      ? `<span class="good">Continuous evaluation done: ${fmt(r.now)}/${r.contMax}, so you've cleared the 40% bar.</span> Now it's all about the end-sem: at least ${rules.endMin}/${rules.end} to pass.`
+      : `<span class="bad">Continuous evaluation is ${fmt(r.now)}/${r.contMax}, below the ${rules.qual} you need.</span> A re-exam only replaces the end-sem, not internals (§5.7). Talk to your professor or department about repeating the course.`;
+  }
+  if(!r.qualOk) return `<span class="bad">Even full marks in ${r.leftLabel} won't reach ${rules.qual}/${r.contMax} in continuous evaluation, and DIAT needs that separately to pass. Talk to your professor this week, not the week before the exam.</span>`;
+  if(r.need === 0) return `<span class="good">You've already cleared the ${rules.qual}/${r.contMax} continuous-evaluation bar.</span> ${r.leftLabel} is now only about your grade.`;
+  const p = r.need / r.leftMax;
+  const per = r.left.length===2 ? ` (about ${fmt(Math.ceil(r.need/2*2)/2)} per test)` : "";
+  if(p <= .4) return `<span class="good">Comfortable.</span> ${fmt(r.need)}/${r.leftMax} in ${r.leftLabel}${per} clears the continuous-evaluation bar. Aim higher for the grade.`;
+  if(p <= .7) return `<span class="warn">Doable, but it needs work.</span> You need ${fmt(r.need)}/${r.leftMax} in ${r.leftLabel}${per}. Start revising this weekend.`;
+  return `<span class="bad">Tight.</span> You need ${fmt(r.need)}/${r.leftMax} in ${r.leftLabel}${per}. Do the past papers and forget the reels for now.`;
+}
+
+let active = Math.min(store.get("dtm_active", 0), subjects.length-1);
+function status(r){
+  if(!r.left.length) return r.now>=rules.qual?"good":"bad";
+  if(!r.qualOk) return "bad";
+  return r.need===0||r.need/r.leftMax<=.4 ? "good" : "warn";
+}
+function renderNav(){
+  const nav = $("#snav"); nav.innerHTML = "";
+  subjects.forEach((s,i)=>{
+    const b = document.createElement("button");
+    b.setAttribute("aria-current", i===active);
+    b.innerHTML = `<span class="dot ${status(calc(s))}"></span><span class="t">${String(i+1).padStart(2,"0")} ${esc(s.name||"Untitled")}</span>`;
+    b.onclick = ()=>{ if(i===active) return; active=i; store.set("dtm_active",i); render(true); };
+    nav.appendChild(b);
+  });
+  const add = document.createElement("button"); add.className="add"; add.textContent="+ Add";
+  add.onclick = ()=>{ subjects.push({name:`Subject ${subjects.length+1}`, t1:"", t2:"", mood:6, plan:""}); active=subjects.length-1; store.set("dtm_active",active); save(); render(true);
+    const n=$("#subjects [data-k=name]"); if(n) n.select(); add.scrollIntoView({inline:"end",block:"nearest"}); };
+  nav.appendChild(add);
+  const cur = nav.children[active];
+  if(cur) nav.scrollLeft = Math.max(0, cur.offsetLeft - (nav.clientWidth - cur.offsetWidth)/2);
+}
+function render(anim){
+  const box = $("#subjects");
+  box.innerHTML = "";
+  if(active<0||active>=subjects.length) active = 0;
+  renderNav();
+  subjects.forEach((s, i) => {
+    if(i!==active) return;
+    const r = calc(s);
+    const el = document.createElement("div");
+    el.className = "card" + (anim?" enter":"");
+    const chipVals = [];
+    for(let v=Math.max(0,rules.in-6); v<=rules.in; v++) chipVals.push(v);
+    const isCustom = !chipVals.includes(Number(s.mood));
+    el.innerHTML = `
+      <div class="subj-head">
+        <label><span class="idx">${String(i+1).padStart(2,"0")}</span><input value="${esc(s.name)}" data-k="name" aria-label="Subject name" placeholder="Subject name" maxlength="40"></label>
+        ${subjects.length>1?`<button class="x" data-del title="Remove subject">×</button>`:""}
+      </div>
+      <div class="row">
+        <label class="f" style="max-width:170px">Test 1 · of ${rules.t1}<input type="number" inputmode="decimal" min="0" max="${rules.t1}" step="0.5" value="${s.t1??""}" data-k="t1" placeholder="not yet"></label>
+        <label class="f" style="max-width:170px">Test 2 · of ${rules.t2}<input type="number" inputmode="decimal" min="0" max="${rules.t2}" step="0.5" value="${s.t2??""}" data-k="t2" placeholder="not yet"></label>
+      </div>
+      <div style="margin-top:16px">
+        <div class="f" style="margin-bottom:6px">Internal · prof-mood guess · of ${rules.in}</div>
+        <div class="chips">
+          ${chipVals.map(v=>`<button class="chip" data-mood="${v}" aria-pressed="${Number(s.mood)===v && !isCustom}">${v}</button>`).join("")}
+          <input type="number" class="chip" placeholder="custom" min="0" max="${rules.in}" step="0.5" data-k="mood" value="${isCustom?s.mood:""}" aria-label="Custom internal mark">
+        </div>
+        <div class="mood">${MOODS[Math.round(s.mood)] || "A custom guess. Bold."}</div>
+      </div>
+      <div class="grid3">
+        <div class="stat"><div class="k">Continuous eval so far</div><div class="v">${fmt(r.now)}<span class="small muted"> / ${r.contMax}</span></div><div class="n">tests written + mood guess</div></div>
+        ${r.left.length
+          ? `<div class="stat"><div class="k">Need in ${r.leftLabel}</div><div class="v ${r.qualOk?(r.need===0?"good":""):"bad"}">${r.qualOk?fmt(r.need):"✕"}<span class="small muted"> / ${r.leftMax}</span></div><div class="n">to reach ${rules.qual}/${r.contMax} (40%)</div></div>`
+          : `<div class="stat"><div class="k">40% bar</div><div class="v ${r.now>=rules.qual?"good":"bad"}">${r.now>=rules.qual?"Cleared":"Missed"}</div><div class="n">needs ${rules.qual}/${r.contMax}</div></div>`}
+        <div class="stat"><div class="k">End-sem to pass</div>${r.fail?`<div class="v bad">—</div><div class="n">can't pass this attempt</div>`:`<div class="v">${fmt(r.passEnd)}<span class="small muted"> / ${rules.end}</span></div><div class="n">min ${rules.endMin} on its own (40%)</div>`}</div>
+      </div>
+      <div class="verdict">${verdictText(s,r)}</div>
+      ${true?`
+      <details ${s.open?"open":""} data-open>
+        <summary>Grade targets: what you need in the end-sem</summary>
+        ${r.leftMax?`<div class="slider">If I score <b>${r.planPct}%</b> in ${r.leftLabel} (${fmt(r.planMarks)}/${r.leftMax})
+          <input type="range" min="0" max="100" step="5" value="${r.planPct}" data-k="plan" aria-label="Planned score in remaining tests"></div>`:""}
+        <table><thead><tr><th>Grade</th><th>Needs (of 100)</th><th>End-sem needed</th><th></th></tr></thead><tbody>
+        ${r.grades.map(g=>`<tr><td><b>${g.g}</b> <span class="muted small">(${g.gp})</span></td><td class="num">${g.cut}+</td>
+          <td class="num ${g.possible?"":"muted"}">${g.possible?fmt(g.needEnd)+" / "+rules.end:"out of reach"}</td>
+          <td class="small ${g.possible?(g.needEnd/rules.end>.85?"warn":"good"):"muted"}">${g.possible?(g.needEnd===0?"already secured":g.needEnd/rules.end>.85?"needs a top paper":"realistic"):"—"}</td></tr>`).join("")}
+        </tbody></table>
+      </details>`:""}
+    `;
+    // events
+    el.querySelectorAll("[data-k]").forEach(inp=>{
+      inp.addEventListener("input", e=>{
+        const k = inp.dataset.k; let v = inp.value;
+        if(k==="t1"||k==="t2"){ v = v===""?"":String(clamp(parseFloat(v)||0,0,rules[k])); }
+        if(k==="mood"){ if(v==="") return; v = clamp(parseFloat(v)||0,0,rules.in); }
+        if(k==="plan"){ v = Number(v); }
+        s[k] = v; save();
+        if(k!=="name") rerenderKeepFocus(inp, i, k); else renderNav();
+      });
+    });
+    el.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{ s.mood = Number(b.dataset.mood); save(); render(); }));
+    const d = el.querySelector("[data-open]"); if(d) d.addEventListener("toggle",()=>{ s.open = d.open; save(); });
+    const del = el.querySelector("[data-del]"); if(del) del.addEventListener("click",()=>{ subjects.splice(i,1); active=Math.max(0,i-1); store.set("dtm_active",active); save(); render(true); });
+    box.appendChild(el);
+  });
+}
+function rerenderKeepFocus(inp, i, k){
+  const pos = inp.selectionStart;
+  render();
+  const n = $("#subjects").querySelector(`[data-k="${k}"]`);
+  if(n){ n.focus(); try{ if(pos!=null && n.type!=="number" && n.type!=="range") n.setSelectionRange(pos,pos) }catch(e){} }
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])) }
+
+
+
+// profile
+const prof = store.get("dtm_profile", {});
+if(prof.name) $("#name").value = prof.name;
+if(prof.branch) $("#branch").value = prof.branch;
+$("#name").addEventListener("input", save); $("#branch").addEventListener("change", save);
+
+// tabs
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected", x===b));
+  ["targets","cgpa","rules"].forEach(t=>$("#tab-"+t).hidden = t!==b.dataset.tab);
+}));
+
+// theme
+const savedTheme = store.get("dtm_theme", null);
+if(savedTheme) document.documentElement.dataset.theme = savedTheme;
+$("#theme").addEventListener("click",()=>{
+  const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+  const nx = cur==="dark"?"light":"dark"; document.documentElement.dataset.theme = nx; store.set("dtm_theme", nx);
+});
+
+// rules tab
+function renderRules(){
+  ["t1","t2","in","end","qual","endMin","pass"].forEach(k=>{ const el = $("#r_"+k); el.value = rules[k];
+    el.oninput = ()=>{ const v = parseFloat(el.value); if(!isNaN(v) && v>=0){ rules[k]=v; store.set("dtm_rules",rules); render(); } }; });
+  const g = $("#gradeRules"); g.innerHTML = "";
+  rules.grades.forEach((gr, idx)=>{
+    const l = document.createElement("label"); l.className="f"; l.style.minWidth="80px";
+    l.innerHTML = `${gr[0]} (${gr[2]} pts) ≥<input type="number" min="0" max="100" value="${gr[1]}">`;
+    l.querySelector("input").oninput = e=>{ const v = parseFloat(e.target.value); if(!isNaN(v)){ rules.grades[idx][1]=v; store.set("dtm_rules",rules); render(); } };
+    g.appendChild(l);
+  });
+}
+$("#resetRules").addEventListener("click",()=>{ rules = structuredClone(DEFAULT_RULES); store.set("dtm_rules",rules); renderRules(); render(); });
+
+// CGPA
+let sems = store.get("dtm_sems", null) || [{sgpa:"", cr:""}];
+function renderSems(){
+  const box = $("#sems"); box.innerHTML = "";
+  sems.forEach((s,i)=>{
+    const r = document.createElement("div"); r.className="row"; r.style.marginBottom="8px";
+    r.innerHTML = `<label class="f">Semester ${i+1} SGPA<input type="number" step="0.01" min="0" max="10" value="${s.sgpa}" data-k="sgpa" placeholder="e.g. 8.2"></label>
+      <label class="f">Credits<input type="number" min="0" value="${s.cr}" data-k="cr" placeholder="e.g. 20"></label>
+      ${sems.length>1?`<button class="x" title="Remove">×</button>`:""}`;
+    r.querySelectorAll("input").forEach(inp=>inp.addEventListener("input",()=>{ s[inp.dataset.k]=inp.value; store.set("dtm_sems",sems); calcCgpa(); }));
+    const x = r.querySelector(".x"); if(x) x.onclick=()=>{ sems.splice(i,1); store.set("dtm_sems",sems); renderSems(); };
+    box.appendChild(r);
+  });
+  calcCgpa();
+}
+function calcCgpa(){
+  let pts=0, cr=0;
+  sems.forEach(s=>{ const g=parseFloat(s.sgpa), c=parseFloat(s.cr); if(!isNaN(g)&&!isNaN(c)&&c>0){ pts+=g*c; cr+=c; } });
+  const c = cr? Math.round(pts/cr*10)/10 : null;
+  $("#cgpa").textContent = c==null?"—":c.toFixed(1);
+  $("#credits").textContent = cr;
+  $("#pct").textContent = c==null?"—":(c>=5.75?(c-0.75)*10:50).toFixed(1)+"%";
+  $("#cgpaNote").textContent = c==null?"Add a semester":c>=8.5?"Gold medal zone (CGPA 8.5+, SGPA 8+ every sem).":c>=8?"Solid. Placement-ready.":c>=7?"Good, with room to grow.":c>=6?"Safe. Push next sem.":"Comeback season starts now.";
+  const t=parseFloat($("#tgtCgpa").value), n=parseFloat($("#nextCred").value), out=$("#tgtOut");
+  if(isNaN(t)||isNaN(n)||n<=0){ out.textContent="Fill both boxes to see the SGPA you need next semester."; return; }
+  const need = (t*(cr+n)-pts)/n;
+  out.innerHTML = need>10?`<span class="bad">You'd need ${need.toFixed(2)} SGPA, which is above 10. Pick a target you can reach over two semesters.</span>`
+    : need<=0?`<span class="good">Already there.</span> Even a 0 SGPA keeps you at ${t}. Don't test that, though.`
+    : `You need <b>${need.toFixed(2)}</b> SGPA next semester to reach a ${t} CGPA.`;
+}
+$("#addSem").addEventListener("click",()=>{ sems.push({sgpa:"",cr:""}); store.set("dtm_sems",sems); renderSems(); });
+$("#tgtCgpa").addEventListener("input",calcCgpa); $("#nextCred").addEventListener("input",calcCgpa);
+
+// Target sheet (PNG)
+$("#download").addEventListener("click",()=>{
+  const list = subjects.map(s=>({s, r:calc(s)}));
+  const W=1080, pad=56, rowH=150, H = 330 + list.length*rowH + 90;
+  const c=document.createElement("canvas"); c.width=W; c.height=H; const x=c.getContext("2d");
+  x.fillStyle="#f3f3f0"; x.fillRect(0,0,W,H); x.strokeStyle="rgba(12,13,15,.05)"; x.lineWidth=1; for(let g=0; g<W; g+=24){ x.beginPath(); x.moveTo(g+.5,0); x.lineTo(g+.5,H); x.stroke(); } for(let g=0; g<H; g+=24){ x.beginPath(); x.moveTo(0,g+.5); x.lineTo(W,g+.5); x.stroke(); }
+  x.fillStyle="#d23c00"; x.fillRect(0,0,W,6); x.fillRect(pad,52,12,12);
+  x.fillStyle="#62666e"; x.font="500 20px 'JetBrains Mono', monospace";
+  x.fillText(`DIAT PUNE / M.TECH / ${$("#branch").value.toUpperCase()}`, pad+24, 64);
+  x.fillStyle="#0c0d0f"; x.font="700 58px 'Inter Tight', sans-serif";
+  x.fillText("Target Sheet", pad, 134);
+  x.font="500 24px 'JetBrains Mono', monospace"; x.fillStyle="#62666e";
+  const nm = $("#name").value.trim();
+  x.fillText(`${nm?nm+" · ":""}${new Date().toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})}`, pad, 178);
+  x.font="400 17px 'JetBrains Mono', monospace";
+  x.fillText(`RULES  T1 /${rules.t1} · T2 /${rules.t2} · INT /${rules.in} · END /${rules.end} · PASS ≥${rules.qual} cont. + ≥${rules.endMin} end-sem`, pad, 222);
+  let y = 270;
+  list.forEach(({s,r})=>{
+    x.fillStyle="#ffffff"; x.fillRect(pad,y,W-pad*2,rowH-20);
+    x.strokeStyle="#d9d9d4"; x.lineWidth=2; x.strokeRect(pad,y,W-pad*2,rowH-20); x.fillStyle="#d23c00"; x.fillRect(pad,y,4,rowH-20);
+    x.fillStyle="#0c0d0f"; x.font="600 28px 'Inter Tight', sans-serif";
+    x.fillText(trunc(x,s.name,520), pad+24, y+44);
+    const cols = [
+      ["TEST 1", r.k1?`${fmt(r.v1)}/${rules.t1}`:"not yet"],
+      ["TEST 2", r.k2?`${fmt(r.v2)}/${rules.t2}`:"not yet"],
+      ["INTERNAL GUESS", `${fmt(r.inMark)}/${rules.in}`],
+      ["NEED IN TESTS LEFT", !r.left.length?(r.now>=rules.qual?"cleared":"missed"):r.qualOk?`${fmt(r.need)}/${r.leftMax}`:"talk to prof"],
+      ["END-SEM TO PASS", r.fail?"—":`${fmt(r.passEnd)}/${rules.end}`],
+    ];
+    cols.forEach(([k,v],ci)=>{
+      const cx = pad+24 + ci*190;
+      x.fillStyle="#62666e"; x.font="500 13px 'JetBrains Mono', monospace"; x.fillText(k, cx, y+84);
+      x.fillStyle = ci===3 ? ((r.left.length?r.qualOk:r.now>=rules.qual)?"#d23c00":"#c42b2b") : "#0c0d0f";
+      x.font="700 26px 'JetBrains Mono', monospace"; x.fillText(v, cx, y+118);
+    });
+    const best = r.grades.find(g=>g.possible && g.needEnd/rules.end<=.85);
+    if(best){ x.fillStyle="#0f7a46"; x.font="500 16px 'JetBrains Mono', monospace";
+      const t=`Realistic: ${best.g} with ${fmt(best.needEnd)}/${rules.end} end-sem`; x.fillText(t, W-pad-24-x.measureText(t).width, y+44); }
+    y += rowH;
+  });
+  x.fillStyle="#62666e"; x.font="400 17px 'JetBrains Mono', monospace";
+  x.fillText("Unofficial estimate, not affiliated with DIAT. The internal mark is a guess.", pad, H-50);
+  x.fillStyle="#0c0d0f"; x.font="700 18px 'JetBrains Mono', monospace";
+  const tag="@rohithyarramala"; x.fillText(tag, W-pad-x.measureText(tag).width, H-50);
+  c.toBlob(b=>{ const a=document.createElement("a"); a.href=URL.createObjectURL(b);
+    a.download=`target-sheet${nm?"-"+nm.replace(/\W+/g,"-").toLowerCase():""}.png`; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); });
+});
+function roundRect(x,a,b,w,h,r){ x.beginPath(); x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b+h,r); x.arcTo(a+w,b+h,a,b+h,r); x.arcTo(a,b+h,a,b,r); x.arcTo(a,b,a+w,b,r); x.closePath(); }
+function trunc(x,t,max){ if(x.measureText(t).width<=max) return t; while(t.length && x.measureText(t+"…").width>max) t=t.slice(0,-1); return t+"…"; }
+
+// share
+const SHARE_URL = location.origin.startsWith("http") ? location.origin + "/" : location.href;
+const SHARE_TEXT = "DIAT marks: work out exactly what you need in the remaining tests and the end-sem to pass, plus a CGPA calculator.";
+function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("on"); clearTimeout(toast._t); toast._t=setTimeout(()=>el.classList.remove("on"),1800); }
+async function copyLink(){
+  try{ await navigator.clipboard.writeText(SHARE_URL); toast("Link copied"); return; }catch(e){}
+  const t=document.createElement("textarea"); t.value=SHARE_URL; t.setAttribute("readonly",""); t.style.cssText="position:fixed;opacity:0"; document.body.appendChild(t); t.select();
+  let ok=false; try{ ok=document.execCommand("copy"); }catch(e){} t.remove();
+  toast(ok?"Link copied":SHARE_URL);
+}
+$("#waBtn").href = "https://wa.me/?text=" + encodeURIComponent(SHARE_TEXT + " " + SHARE_URL);
+$("#copyBtn").addEventListener("click", copyLink);
+$("#shareBtn").addEventListener("click", async ()=>{
+  if(navigator.share){ try{ await navigator.share({title:"DIAT Target Marks", text:SHARE_TEXT, url:SHARE_URL}); }catch(e){} }
+  else copyLink();
+});
+
+// live GitHub star count (public API, no login)
+(async()=>{ try{
+  const r = await fetch("https://api.github.com/repos/rohithyarramala/diat-target-marks");
+  if(!r.ok) return; const j = await r.json();
+  if(typeof j.stargazers_count==="number"){ const c=$("#starCount"); c.textContent=j.stargazers_count; c.hidden=false; }
+}catch(e){} })();
+
+renderRules(); render(); renderSems();
+</script>
+<!-- Vercel Web Analytics: page-view counts only (disclosed in the footer). Inert outside Vercel. -->
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
